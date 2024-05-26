@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Chart.Name }}-{{ .Release.Name }}-ingress
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`globedata.be`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: {{ .Chart.Name }}-{{ .Release.Name }}-service
+          port: 80

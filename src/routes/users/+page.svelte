@@ -5,8 +5,8 @@
 	import UserTable from './UserTable.svelte';
 	import AddUserForm from './AddUserForm.svelte';
 	import EditUserForm from './EditUserForm.svelte';
-	import { UserService } from '../../gen/user/v1/user_connect';
-
+/* 	import { UserService } from '../../gen/user/v1/user_connect';
+ */
 	let userList = [];
 	let addUserButtonActive = false;
 	let editUser;
@@ -19,29 +19,29 @@
 
 	// Here we make the client itself, combining the service
 	// definition with the transport.
-	const userServiceClient = createPromiseClient(UserService, transport);
-
+/* 	const userServiceClient = createPromiseClient(UserService, transport);
+ */
 	function createUser(user) {
-		userServiceClient.createUser(user.detail).then(() => readAllUsers());
-	}
+/* 		userServiceClient.createUser(user.detail).then(() => readAllUsers());
+ */	}
 
 	function readUser(guid) {
-		userServiceClient.readUser({ guid: guid }).then((r) => (editUser = r));
-	}
+/* 		userServiceClient.readUser({ guid: guid }).then((r) => (editUser = r));
+ */	}
 
 	function readAllUsers() {
-		userServiceClient.readAllUsers({}).then((r) => (userList = r.users));
-	}
+/* 		userServiceClient.readAllUsers({}).then((r) => (userList = r.users));
+ */	}
 
 	function updateUser(user) {
-		userServiceClient.updateUser(user).then(() => readAllUsers());
-	}
+/* 		userServiceClient.updateUser(user).then(() => readAllUsers());
+ */	}
 
 	function deleteUser(guid) {
-		userServiceClient.deleteUser({ guid: guid }, {}).then(() => {
+		/* userServiceClient.deleteUser({ guid: guid }, {}).then(() => {
 			readAllUsers();
 			editUser = null;
-		});
+		}); */
 	}
 
 	function scrollToTop() {
@@ -52,8 +52,8 @@
 	}
 
 	onMount(() => {
-		readAllUsers();
-	});
+/* 		readAllUsers();
+ */	});
 </script>
 
 <UserTable
