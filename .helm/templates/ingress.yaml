@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   name: {{ .Chart.Name }}-{{ .Release.Name }}-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: loopabord.nl
+    - host: "loopabord.nl"
       http:
         paths:
           - path: /
