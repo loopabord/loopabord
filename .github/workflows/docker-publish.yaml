@@ -42,11 +42,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - id: lowercase_repository
-        run: echo "::set-output name=repo::${{ github.repository }}" | tr '[:upper:]' '[:lower:]'
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ github.repository }}
       - id: registry_slug
         uses: ASzc/change-string-case-action@v1
         with:
-          string: ${{ env.REGISTRY }}/${{ steps.lowercase_repository.outputs.repo }}:${{ needs.release-on-push.outputs.version }}
+          string: ${{ env.REGISTRY }}/${{ steps.lowercase_repository.outputs.lowercase }}:${{ needs.release-on-push.outputs.version }}
       - name: check url
         run: echo ${{ steps.registry_slug.outputs.lowercase }}
 
@@ -78,7 +80,7 @@ jobs:
       #   id: meta
       #   uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       #   with:
-      #     images: ${{ env.REGISTRY }}/${{ steps.lowercase_repository.outputs.repo }}
+      #     images: ${{ env.REGISTRY }}/${{ steps.lowercase_repository.outputs.lowercase }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -116,5 +118,5 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade ${{ steps.lowercase_repository.outputs.repo }} ./.helm/ --install --wait --atomic --namespace=loopabord --create-namespace --set=app.name=${{ steps.lowercase_repository.outputs.repo }} --set=imageCredentials.registry=${{ secrets.IMAGECREDENTIALS_REGISTRY }} --set=imageCredentials.username=${{ secrets.IMAGECREDENTIALS_USERNAME }} --set=imageCredentials.password=${{ secrets.IMAGECREDENTIALS_PASSWORD }} --set=image.url=${{ needs.build.outputs.url }}
+          exec: helm upgrade ${{ steps.lowercase_repository.outputs.lowercase }} ./.helm/ --install --wait --atomic --namespace=loopabord --create-namespace --set=app.name=${{ steps.lowercase_repository.outputs.lowercase }} --set=imageCredentials.registry=${{ secrets.IMAGECREDENTIALS_REGISTRY }} --set=imageCredentials.username=${{ secrets.IMAGECREDENTIALS_USERNAME }} --set=imageCredentials.password=${{ secrets.IMAGECREDENTIALS_PASSWORD }} --set=image.url=${{ needs.build.outputs.url }}
           kubeconfig: '${{ secrets.KUBECONFIG }}'
