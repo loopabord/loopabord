@@ -1,13 +1,18 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: {{ .Chart.Name }}-{{ .Release.Name }}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`globedata.be`) && PathPrefix(`/`)
-      kind: Rule
-      services:
-        - name: {{ .Chart.Name }}-{{ .Release.Name }}-service
-          port: 80
+  rules:
+    - host: loopabord.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Chart.Name }}-{{ .Release.Name }}-service
+                port:
+                  number: 80
