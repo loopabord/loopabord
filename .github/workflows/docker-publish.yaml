@@ -112,7 +112,8 @@ jobs:
           mv ./.helm/Chart.yaml ./.helm/Chart.old.yaml &&
           cat ./.helm/Chart.old.yaml | grep -v appVersion > ./.helm/Chart.yaml &&
           echo -e "\r\nappVersion: v${{ needs.build.outputs.version }}\r\n" >> ./.helm/Chart.yaml &&
-          cat ./.helm/Chart.yaml
+          cat ./.helm/Chart.yaml &&
+          echo helm upgrade loopabord ./.helm/ --install --wait --atomic --namespace=loopabord --create-namespace --set=app.name=loopabord --set=imageCredentials.registry=${{ secrets.IMAGECREDENTIALS_REGISTRY }} --set=imageCredentials.username=${{ secrets.IMAGECREDENTIALS_USERNAME }} --set=imageCredentials.password=${{ secrets.IMAGECREDENTIALS_PASSWORD }} --set=image.url=${{ needs.build.outputs.url }}
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
