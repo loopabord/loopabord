@@ -1,0 +1,67 @@
+<script>
+	import { createEventDispatcher } from 'svelte';
+	export let userList = [];
+	export let addUserButtonActive = false;
+	const dispatch = createEventDispatcher();
+</script>
+
+<div class="grid flex-grow card rounded-box">
+	<div class="overflow-x-auto overflow-y-auto" style="max-height: 100%">
+		<table class="table">
+			<thead class="sticky-header bg-100">
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Role</th>
+					{#if !addUserButtonActive}
+						<th class="text-right"
+							><button class="btn btn-primary btn-xs" on:click={() => dispatch('showAddUser')}
+								>Add User</button
+							></th
+						>
+					{:else}
+						<th></th>
+					{/if}
+				</tr>
+			</thead>
+			<tbody>
+				{#if userList.length > 0}
+					{#each userList as user, index}
+						<tr class="hover">
+							<td></td>
+							<td>{user.name}</td>
+							<td>{user.email}</td>
+							<td class="capitalize">{user.role}</td>
+							<td><button class="hover:underline" on:click={() => dispatch('showEditUser', user.guid)}>Details</button></td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<style>
+	/* Create numbered list */
+	table {
+		counter-reset: css-counter 1;
+	}
+
+	table tr:not(:first-child) {
+		counter-increment: css-counter 1;
+	}
+
+	table tr td:first-child::before {
+		content: counter(css-counter);
+	}
+
+	.sticky-header {
+		position: sticky;
+		top: 0;
+	}
+	.table {
+		max-height: 100%; /* Set the maximum height for the table */
+		overflow-y: auto; /* Enable vertical scrolling */
+	}
+</style>
