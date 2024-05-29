@@ -62,8 +62,8 @@
 	onMount(() => {
 		const unsubscribe = storeUser.subscribe((result) => {
 			storedUser = result;
+			readUser(storedUser.sub);
 		});
-		readUser();
 
 		return () => {
 			unsubscribe();
