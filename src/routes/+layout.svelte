@@ -8,6 +8,7 @@
 	import { replaceState } from '$app/navigation';
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { PUBLIC_REDIRECT_URI } from '$env/static/public';
 
 	let user;
 	let storeUser = writable(user);
@@ -22,7 +23,7 @@
 	async function login() {
 		await auth0.loginWithRedirect({
 			authorizationParams: {
-				redirect_uri: 'http://localhost:5173/',
+				redirect_uri: PUBLIC_REDIRECT_URI,
 				audience: 'https://loopabord.nl'
 			}
 		});
