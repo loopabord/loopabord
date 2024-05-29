@@ -24,21 +24,27 @@
 	const userServiceClient = createPromiseClient(UserFrontendService, transport);
 
 	function createUser(user) {
-		userServiceClient.createUser({ user: user }).then(() => readAllUsers());
+		userServiceClient.createUser({ user: user }); //.then(() => readAllUsers());
 	}
 
 	function readUser(id) {
-		userServiceClient.readUser({ id: id }).then((r) => {
-			editUser = r.user;
-			if (editUser == null) {
+		userServiceClient
+			.readUser({ id: id })
+			.then((r) => {
+				editUser = r.user;
+				// if (editUser == null) {
+				// }
+			})
+			.catch((e) => {
+				console.log(e);
 				editUser = { id: storedUser.sub, name: storedUser.nickname };
+				console.log(editUser);
 				createUser(editUser);
-			}
-		});
+			});
 	}
 
 	function readAllUsers() {
-		userServiceClient.readAllUsers({ authorId: user.sub }).then((r) => (userList = r.users));
+		// userServiceClient.readAllUsers({}).then((r) => (userList = r.users));
 	}
 
 	function updateUser(user) {
@@ -60,8 +66,10 @@
 	}
 
 	onMount(() => {
+		console.log(PUBLIC_USER_URL);
 		const unsubscribe = storeUser.subscribe((result) => {
 			storedUser = result;
+			console.log(storedUser);
 			readUser(storedUser.sub);
 		});
 
