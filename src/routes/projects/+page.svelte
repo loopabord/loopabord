@@ -7,7 +7,7 @@
 	import EditProjectForm from './EditProjectForm.svelte';
 	import { ProjectFrontendService } from '../../gen/project/v1/project_connect';
 	import { getContext } from 'svelte';
-	import { PUBLIC_USER_URL } from '$env/static/public';
+	import { PUBLIC_PROJECT_URL } from '$env/static/public';
 
 	const storeUser = getContext('user');
 	let user;
@@ -19,7 +19,7 @@
 	// The transport defines what type of endpoint we're hitting.
 	// In our example we'll be communicating with a Connect endpoint.
 	const transport = createConnectTransport({
-		baseUrl: PUBLIC_USER_URL
+		baseUrl: PUBLIC_PROJECT_URL
 	});
 
 	// Here we make the client itself, combining the service
