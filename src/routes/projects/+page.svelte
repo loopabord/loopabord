@@ -6,6 +6,11 @@
 	import AddProjectForm from './AddProjectForm.svelte';
 	import EditProjectForm from './EditProjectForm.svelte';
 	import { ProjectFrontendService } from '../../gen/project/v1/project_connect';
+	import { getContext } from 'svelte';
+	import { PUBLIC_USER_URL } from '$env/static/public';
+
+	const storeUser = getContext('user');
+	let user;
 
 	let projectList = [];
 	let addProjectButtonActive = false;
@@ -14,7 +19,7 @@
 	// The transport defines what type of endpoint we're hitting.
 	// In our example we'll be communicating with a Connect endpoint.
 	const transport = createConnectTransport({
-		baseUrl: 'http://localhost:8080'
+		baseUrl: PUBLIC_USER_URL
 	});
 
 	// Here we make the client itself, combining the service
@@ -22,26 +27,31 @@
 	const projectServiceClient = createPromiseClient(ProjectFrontendService, transport);
 
 	function createProject(project) {
-		projectServiceClient.createProject(project.detail).then(() => readAllProjects());
+		console.log(project.detail);
+		project.detail.authorId = user.sub;
+		project.detail.authorName = user.nickname;
+		projectServiceClient.createProject({ project: project.detail }).then(() => readAllProjects());
 	}
 
 	function readProject(id) {
-		projectServiceClient.readProject({ id: id }).then((r) => (editProject = r));
+		projectServiceClient.readProject({ id: id }).then((r) => (editProject = r.project));
 	}
 
 	function readAllProjects() {
-		projectServiceClient.readAllProjects({}).then((r) => (projectList = r.projects));
+		projectServiceClient
+			.readAllProjects({ authorId: user.sub })
+			.then((r) => (projectList = r.projects));
 	}
 
 	function updateProject(project) {
-		// projectServiceClient.updateProject(project).then(() => readAllProjects());
+		projectServiceClient.updateProject({ project: project }).then(() => readAllProjects());
 	}
 
-	function deleteProject(guid) {
-		// projectServiceClient.deleteProject({ guid: guid }, {}).then(() => {
-		// 	readAllProjects();
-		// 	editProject = null;
-		// });
+	function deleteProject() {
+		projectServiceClient.deleteProject({ id: editProject.id }, {}).then(() => {
+			readAllProjects();
+			editProject = null;
+		});
 	}
 
 	function scrollToTop() {
@@ -52,7 +62,15 @@
 	}
 
 	onMount(() => {
-		// readAllProjects();
+		const unsubscribe = storeUser.subscribe((result) => {
+			user = result;
+			console.log(user);
+		});
+		readAllProjects();
+
+		return () => {
+			unsubscribe();
+		};
 	});
 </script>
 
@@ -80,7 +98,7 @@
 
 {#if editProject != null}
 	<EditProjectForm
-		bind:projectId={editProject}
+		bind:project={editProject}
 		on:updateProject={(event) => updateProject(event.detail)}
 		on:deleteProject={(event) => deleteProject(event.detail)}
 		on:closeProjectForm={() => {

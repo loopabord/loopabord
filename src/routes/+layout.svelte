@@ -6,18 +6,24 @@
 	import { Auth0Client, User } from '@auth0/auth0-spa-js';
 	import { onMount } from 'svelte';
 	import { replaceState } from '$app/navigation';
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+
+	let user;
+	let storeUser = writable(user);
+
+	setContext('user', storeUser);
 
 	const auth0 = new Auth0Client({
 		domain: 'dev-6vml6vq4imkmq68m.us.auth0.com',
 		clientId: '0wwbCdnErWPkH1nfaerKHeMDyLG2lTy1'
 	});
 
-	let user;
-
 	async function login() {
 		await auth0.loginWithRedirect({
 			authorizationParams: {
-				redirect_uri: 'http://localhost:5173/'
+				redirect_uri: 'http://localhost:5173/',
+				audience: 'https://loopabord.nl'
 			}
 		});
 	}
@@ -32,7 +38,10 @@
 				.handleRedirectCallback()
 				.then(async () => {
 					user = await auth0.getUser();
-					let token = await auth0.getTokenSilently();
+					storeUser.set(user);
+					let token = await auth0.getTokenSilently({
+						authorizationParams: { audience: 'https://loopabord.nl' }
+					});
 					document.cookie = `token=${token}; Secure; Path=/;`;
 				})
 				.catch((e) => {
@@ -40,6 +49,18 @@
 				});
 
 			replaceState($page.url.pathname, $page.state);
+		} else {
+			// Attempt to get the user if there's no search parameter in the URL
+			user = await auth0.getUser();
+			if (!user) {
+				login();
+			} else {
+				storeUser.set(user);
+				let token = await auth0.getTokenSilently({
+					authorizationParams: { audience: 'https://loopabord.nl' }
+				});
+				document.cookie = `token=${token}; Secure; Path=/;`;
+			}
 		}
 	});
 </script>
@@ -61,7 +82,7 @@
 						<div class="h-4"></div>
 						<div class="flex w-full h-full md:flex-row flex-col-reverse">
 							<!-- Route content -->
-							<slot {user} />
+							<slot />
 						</div>
 					</div>
 				</div>

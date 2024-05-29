@@ -4,6 +4,7 @@
 
 	let project = { tasks: [] };
 	let formName = 'Create new project';
+	let deleteBtn = false;
 
 	const dispatch = createEventDispatcher();
 

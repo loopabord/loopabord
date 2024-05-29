@@ -196,9 +196,9 @@ export class ReadAllProjectsRequest extends Message<ReadAllProjectsRequest> {
  */
 export class ReadAllProjectsResponse extends Message<ReadAllProjectsResponse> {
   /**
-   * @generated from field: repeated project.v1.Project project = 1;
+   * @generated from field: repeated project.v1.Project projects = 1;
    */
-  project: Project[] = [];
+  projects: Project[] = [];
 
   constructor(data?: PartialMessage<ReadAllProjectsResponse>) {
     super();
@@ -208,7 +208,7 @@ export class ReadAllProjectsResponse extends Message<ReadAllProjectsResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "project.v1.ReadAllProjectsResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "project", kind: "message", T: Project, repeated: true },
+    { no: 1, name: "projects", kind: "message", T: Project, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReadAllProjectsResponse {
@@ -388,22 +388,27 @@ export class Project extends Message<Project> {
   description = "";
 
   /**
-   * @generated from field: repeated string collaborators = 4;
-   */
-  collaborators: string[] = [];
-
-  /**
-   * @generated from field: string author_id = 5;
+   * @generated from field: string author_id = 4;
    */
   authorId = "";
 
   /**
-   * @generated from field: string author_name = 6;
+   * @generated from field: string author_name = 5;
    */
   authorName = "";
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 7;
+   * @generated from field: repeated string collaborator_ids = 6;
+   */
+  collaboratorIds: string[] = [];
+
+  /**
+   * @generated from field: repeated string collaborator_names = 7;
+   */
+  collaboratorNames: string[] = [];
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 8;
    */
   createdAt?: Timestamp;
 
@@ -418,10 +423,11 @@ export class Project extends Message<Project> {
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "collaborators", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 5, name: "author_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 6, name: "author_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 7, name: "created_at", kind: "message", T: Timestamp },
+    { no: 4, name: "author_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "author_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "collaborator_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 7, name: "collaborator_names", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 8, name: "created_at", kind: "message", T: Timestamp },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Project {

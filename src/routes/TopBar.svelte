@@ -55,20 +55,25 @@
 						>
 					</label>
 				</li>
-				{#if user == undefined}
-				<li><button on:click={() => dispatch('login')}>Sign In</button></li>
-				{:else}
+				{#if user != undefined}
 					<li>
-						<button
-							><div class="avatar">
-								<div class="w-5 rounded-full">
-									<img src={user.picture} alt="Profile Picture" />
+						<details>
+							<summary
+								><div class="avatar">
+									<div class="w-5 rounded-full">
+										<img src={user.picture} alt="Profile Picture" />
+									</div>
 								</div>
-							</div>
-							{user.nickname}</button
-						>
+								{user.nickname}</summary
+							>
+							<ul class="p-2 bg-base-100 rounded-t-none" style="margin-top:0px!important;margin-inline-start:1rem!important;">
+								<li>
+									<a href="/settings">Settings</a>
+								</li>
+								<li><button on:click={() => dispatch('logout')}>Sign Out</button></li>
+							</ul>
+						</details>
 					</li>
-					<li><button on:click={() => dispatch('logout')}>Sign Out</button></li>
 				{/if}
 			</ul>
 		</div>

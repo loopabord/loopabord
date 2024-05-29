@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher, onMount } from 'svelte';
-	import Page from '../+page.svelte';
 
 	export let project;
 	export let formName;
+	export let deleteBtn;
 
 	let firstInput;
 
@@ -16,6 +16,11 @@
 			dispatch('closeProjectForm');
 			event.target.reset();
 		}
+	}
+
+	function deleteProject(event) {
+		dispatch('deleteProject', project);
+		dispatch('closeProjectForm');
 	}
 
 	onMount(() => {
@@ -81,7 +86,9 @@
 				/>
 			</label>
 			<div class="flex flex-row">
-				<!-- <button type="button" class="btn btn-error mr-2" on:click={delete}>Delete</button> -->
+				{#if deleteBtn}
+					<button type="button" class="btn btn-error mr-2" on:click={deleteProject}>Delete</button>
+				{/if}
 				<button class="btn btn-primary flex-grow">Save</button>
 			</div>
 		</div>

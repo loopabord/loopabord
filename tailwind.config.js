@@ -9,7 +9,7 @@ export default {
     themes: [
       {
         light: {
-          ...require("daisyui/src/theming/themes")["light"],
+          ...require("daisyui/src/theming/themes")["valentine"],
           // "primary": "00AACA",
           ".btn-primary": {
             "color": "white"
@@ -19,7 +19,7 @@ export default {
           }
         },
         dark: {
-          ...require("daisyui/src/theming/themes")["night"],
+          ...require("daisyui/src/theming/themes")["synthwave"],
           // "primary": "#00AACA",
         },
       },

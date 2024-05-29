@@ -30,9 +30,9 @@
 					{#each projectList as project, index}
 						<tr class="hover">
 							<td></td>
-							<td>{project.name}</td>
-							<td>{project.description}</td>
-							<td class="capitalize">{project.author}</td>
+							<td class="capitalize">{project.name}</td>
+							<td class="capitalize">{project.description}</td>
+							<td class="capitalize">{project.authorName}</td>
 							<td><button class="hover:underline" on:click={() => dispatch('openEditProject', project.id)}>Details</button></td>
 						</tr>
 					{/each}

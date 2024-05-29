@@ -2,29 +2,33 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import ProjectForm from './ProjectForm.svelte';
 
-	export let projectId;
-	let formName = "Project details"
+	let formName = 'Project details';
+	let deleteBtn = true;
 
-	let project = projectId;
+	export let project;
 
 	const dispatch = createEventDispatcher();
 
 	function updateProject(event) {
-		event.preventDefault();
-
-		if (project.name != '' && project.tasks.length > 0) {
+		if (project.name != '') {
 			dispatch('updateProject', project);
 			dispatch('closeProjectForm');
-			event.target.reset();
 		}
+	}
+
+	function deleteProject(event) {
+		dispatch('deleteProject', project);
+		dispatch('closeProjectForm');
 	}
 </script>
 
 <ProjectForm
 	bind:project
 	bind:formName
+	bind:deleteBtn
 	on:closeProjectForm={() => {
 		dispatch('closeProjectForm');
 	}}
 	on:saveProject={updateProject}
+	on:deleteProject={deleteProject}
 ></ProjectForm>
