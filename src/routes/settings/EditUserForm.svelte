@@ -11,6 +11,7 @@
 
 	function updateUser(event) {
 		if (user.name != '') {
+			console.log(user)
 			dispatch('updateUser', user);
 			dispatch('closeUserForm');
 		}

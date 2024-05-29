@@ -42,7 +42,7 @@
 	}
 
 	function updateUser(user) {
-		userServiceClient.updateUser({ user: user }).then(() => readAllUsers());
+		userServiceClient.updateUser({ user: editUser }).then(() => readAllUsers());
 	}
 
 	function deleteUser() {
