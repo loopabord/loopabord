@@ -38,9 +38,11 @@
 	}
 
 	function readAllProjects() {
-		projectServiceClient
-			.readAllProjects({ authorId: user.sub })
-			.then((r) => (projectList = r.projects));
+		if (user != undefined) {
+			projectServiceClient
+				.readAllProjects({ authorId: user.sub })
+				.then((r) => (projectList = r.projects));
+		}
 	}
 
 	function updateProject(project) {

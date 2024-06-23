@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let user;
+	export let user = { name: '', id: '' };
 	export let formName;
 	export let deleteBtn;
 
@@ -39,13 +39,15 @@
 
 			<label class="input input-bordered flex items-center gap-2 text-right max-w-xl">
 				Name
-				<input
-					type="text"
-					name="name"
-					class="grow text-right"
-					bind:value={user.name}
-					bind:this={firstInput}
-				/>
+				{#if user}
+					<input
+						type="text"
+						name="name"
+						class="grow text-right"
+						bind:value={user.name}
+						bind:this={firstInput}
+					/>
+				{/if}
 			</label>
 		</div>
 	</form>

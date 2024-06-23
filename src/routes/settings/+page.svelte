@@ -36,8 +36,7 @@
 				// }
 			})
 			.catch((e) => {
-				console.log(e);
-				editUser = { id: storedUser.sub, name: storedUser.nickname };
+				editUser = { id: storedUser.sub, name: storedUser.nickname, createdAt: storedUser.updated_at };
 				console.log(editUser);
 				createUser(editUser);
 			});

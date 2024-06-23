@@ -53,24 +53,45 @@
 		});
 	}
 
-	onMount(() => {
-		// readAllSoundFonts();
-	});
+	let filename = 'MCNBS_3_3_4.sf2'; // Replace with your file name
+	let downloadUrl = '';
+
+	onMount(async () => {
+        try {
+            const response = await fetch(`http://localhost:8081/download/${filename}`);
+            if (response.ok) {
+                downloadUrl = response.url;
+            } else {
+                console.error('Failed to get download URL');
+            }
+        } catch (error) {
+            console.error('Error fetching download URL:', error);
+        }
+    });
 </script>
 
+<main>
+	<h1>Download File</h1>
+	{#if downloadUrl}
+		<a href={downloadUrl} download={filename}>Download {filename}</a>
+	{:else}
+		<p>Loading...</p>
+	{/if}
+</main>
+
 {#if soundfontDetail == null}
-<SoundFontTable
-	{soundfontList}
-	{addSoundFontButtonActive}
-	on:showAddSoundFont={() => {
-		addSoundFontButtonActive = true;
-		scrollToTop();
-	}}
-	on:openEditSoundFont={(event) => {
-		editSoundFont = event.detail;
-		scrollToTop();
-	}}
-/>
+	<SoundFontTable
+		{soundfontList}
+		{addSoundFontButtonActive}
+		on:showAddSoundFont={() => {
+			addSoundFontButtonActive = true;
+			scrollToTop();
+		}}
+		on:openEditSoundFont={(event) => {
+			editSoundFont = event.detail;
+			scrollToTop();
+		}}
+	/>
 {/if}
 
 {#if addSoundFontButtonActive}
