@@ -12,6 +12,7 @@
 
 	let userList = [];
 	let editUser = { id: '', name: '' };
+	let notification = '';
 
 	// The transport defines what type of endpoint we're hitting.
 	// In our example we'll be communicating with a Connect endpoint.
@@ -32,11 +33,13 @@
 			.readUser({ id: id })
 			.then((r) => {
 				editUser = r.user;
-				// if (editUser == null) {
-				// }
 			})
 			.catch((e) => {
-				editUser = { id: storedUser.sub, name: storedUser.nickname, createdAt: storedUser.updated_at };
+				editUser = {
+					id: storedUser.sub,
+					name: storedUser.nickname,
+					createdAt: storedUser.updated_at
+				};
 				console.log(editUser);
 				createUser(editUser);
 			});
@@ -46,8 +49,16 @@
 		// userServiceClient.readAllUsers({}).then((r) => (userList = r.users));
 	}
 
-	function updateUser(user) {
-		userServiceClient.updateUser({ user: editUser }).then(() => readAllUsers());
+	async function updateUser(user) {
+		notification = '';
+		try {
+			await userServiceClient.updateUser({ user: editUser });
+			readAllUsers();
+			notification = 'User updated successfully!';
+		} catch (e) {
+			notification = 'Failed to update user, try again later. ';
+		}
+		readUser(storedUser.sub);
 	}
 
 	function deleteUser() {
@@ -77,6 +88,7 @@
 		};
 	});
 </script>
+<div>
 
 <EditUserForm
 	bind:user={editUser}
@@ -86,3 +98,7 @@
 		editUser = null;
 	}}
 />
+{#if notification}
+	<div class="notification">{notification}</div>
+{/if}
+</div>

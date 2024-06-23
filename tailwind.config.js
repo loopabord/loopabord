@@ -16,6 +16,9 @@ export default {
           },
           ".btn-error": {
             "color": "white"
+          },
+            ".btn-secondary": {
+            "color": "white"
           }
         },
         dark: {

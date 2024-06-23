@@ -14,7 +14,6 @@
 		if (user.name != '') {
 			dispatch('saveUser', user);
 			dispatch('closeUserForm');
-			event.target.reset();
 		}
 	}
 
@@ -49,6 +48,9 @@
 					/>
 				{/if}
 			</label>
+			<div class="flex flex-row">
+				<button class="btn btn-primary flex-grow">Save</button>
+			</div>
 		</div>
 	</form>
 </div>

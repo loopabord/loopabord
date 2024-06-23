@@ -8,7 +8,15 @@
 	// import { SoundFontService } from '../../gen/soundfont/v1/soundfont_connect';
 	// import { SoundFontService } from '../../gen/soundfont_connect';
 
-	let soundfontList = [];
+	let soundfontList = [
+		{
+			name: 'MCNBS_3_3_4.sf2',
+			description: 'Minecraft Soundfont',
+			author: 'Mojang',
+			guid: 'unique-guid-for-this-entry'
+		}
+		// Add other soundfonts as needed
+	];
 	let addSoundFontButtonActive = false;
 	let editSoundFont;
 	let soundfontDetail = null;
@@ -53,31 +61,27 @@
 		});
 	}
 
-	let filename = 'MCNBS_3_3_4.sf2'; // Replace with your file name
-	let downloadUrl = '';
-
-	onMount(async () => {
-        try {
-            const response = await fetch(`http://localhost:8081/download/${filename}`);
-            if (response.ok) {
-                downloadUrl = response.url;
-            } else {
-                console.error('Failed to get download URL');
-            }
-        } catch (error) {
-            console.error('Error fetching download URL:', error);
-        }
-    });
+	async function handleDownload({ detail }) {
+		const filename = detail.filename;
+		try {
+			const response = await fetch(`http://localhost:8081/download/${filename}`);
+			if (response.ok) {
+				const downloadUrl = response.url;
+				const link = document.createElement('a');
+				link.href = downloadUrl;
+				link.setAttribute('download', filename);
+				link.style.display = 'none';
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			} else {
+				console.error('Failed to get download URL');
+			}
+		} catch (error) {
+			console.error('Error fetching download URL:', error);
+		}
+	}
 </script>
-
-<main>
-	<h1>Download File</h1>
-	{#if downloadUrl}
-		<a href={downloadUrl} download={filename}>Download {filename}</a>
-	{:else}
-		<p>Loading...</p>
-	{/if}
-</main>
 
 {#if soundfontDetail == null}
 	<SoundFontTable
@@ -91,6 +95,7 @@
 			editSoundFont = event.detail;
 			scrollToTop();
 		}}
+		on:downloadFile={handleDownload}
 	/>
 {/if}
 
