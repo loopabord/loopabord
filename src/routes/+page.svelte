@@ -1,1 +1,1 @@
-Running Loopabord version 19.
+Running Loopabord version 20.
