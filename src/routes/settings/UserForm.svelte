@@ -35,7 +35,6 @@
 			<div class="flex flex-row justify-between items-center">
 				<div class="text-xl">{formName}</div>
 			</div>
-
 			<label class="input input-bordered flex items-center gap-2 text-right max-w-xl">
 				Name
 				{#if user}
@@ -47,9 +46,22 @@
 						bind:this={firstInput}
 					/>
 				{/if}
+			</label><label class="input input-bordered flex items-center gap-2 text-right max-w-xl">
+				Email
+				{#if user}
+					<input
+						type="text"
+						name="email"
+						class="grow text-right"
+						bind:value={user.email}
+					/>
+				{/if}
 			</label>
 			<div class="flex flex-row">
 				<button class="btn btn-primary flex-grow">Save</button>
+			</div>
+			<div class="flex flex-row">
+				<button class="btn btn-warning flex-grow" on:click={deleteUser}>Delete My Account</button>
 			</div>
 		</div>
 	</form>

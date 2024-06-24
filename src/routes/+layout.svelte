@@ -43,7 +43,7 @@
 					let token = await auth0.getTokenSilently({
 						authorizationParams: { audience: 'https://loopabord.nl' }
 					});
-					document.cookie = `token=${token}; Secure; Path=/;`;
+					document.cookie = `token=${token}; Path=/;`;
 				})
 				.catch((e) => {
 					console.log(e);
@@ -60,7 +60,7 @@
 				let token = await auth0.getTokenSilently({
 					authorizationParams: { audience: 'https://loopabord.nl' }
 				});
-				document.cookie = `token=${token}; Secure; Path=/;`;
+				document.cookie = `token=${token}; Path=/;`;
 			}
 		}
 	});

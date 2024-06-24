@@ -19,7 +19,8 @@
 	// The transport defines what type of endpoint we're hitting.
 	// In our example we'll be communicating with a Connect endpoint.
 	const transport = createConnectTransport({
-		baseUrl: PUBLIC_PROJECT_URL
+		baseUrl: PUBLIC_PROJECT_URL,
+		credentials: "include"
 	});
 
 	// Here we make the client itself, combining the service

@@ -17,7 +17,8 @@
 	// The transport defines what type of endpoint we're hitting.
 	// In our example we'll be communicating with a Connect endpoint.
 	const transport = createConnectTransport({
-		baseUrl: PUBLIC_USER_URL
+		baseUrl: PUBLIC_USER_URL,
+		credentials: "include"
 	});
 
 	// Here we make the client itself, combining the service
@@ -38,6 +39,7 @@
 				editUser = {
 					id: storedUser.sub,
 					name: storedUser.nickname,
+					email: storedUser.email,
 					createdAt: storedUser.updated_at
 				};
 				console.log(editUser);
