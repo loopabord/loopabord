@@ -6,6 +6,12 @@
 	import { UserFrontendService } from '../../gen/user/v1/user_connect';
 	import { getContext } from 'svelte';
 	import { PUBLIC_USER_URL } from '$env/static/public';
+	import { Auth0Client, User } from '@auth0/auth0-spa-js';
+
+	const auth0 = new Auth0Client({
+		domain: 'dev-6vml6vq4imkmq68m.us.auth0.com',
+		clientId: '0wwbCdnErWPkH1nfaerKHeMDyLG2lTy1'
+	});
 
 	const storeUser = getContext('user');
 	let storedUser;
@@ -64,9 +70,10 @@
 	}
 
 	function deleteUser() {
-		userServiceClient.deleteUser({ id: editUser.id }, {}).then(() => {
+		userServiceClient.deleteUser({ id: editUser.id }, {}).then(async () => {
 			readAllUsers();
 			editUser = null;
+			await auth0.logout();
 		});
 	}
 
